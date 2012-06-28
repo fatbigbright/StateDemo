@@ -40,6 +40,9 @@
     <Compile Include="State.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Browser.cs" />
+    <Compile Include="OperationResult.cs" />
+    <Compile Include="GridControl.cs" />
+    <Compile Include="RecordModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

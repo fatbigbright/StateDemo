@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace StateDemo00
 {
@@ -6,7 +8,7 @@ namespace StateDemo00
 	{
 		private Control _header = new Control("Header Control");
 
-		private Control _grid = new Control("Grid for Details");
+		private GridControl _grid = new GridControl("Grid for Details");
 
 		private State _currentState = null;
 
@@ -19,19 +21,26 @@ namespace StateDemo00
 		{
 			Console.WriteLine("----------------------------------------------");
 			Console.WriteLine("Current State: {0}", _currentState.ToString());
-			Console.WriteLine("_header.Enabled = {0}", _header.Enabled);
-			Console.WriteLine("_grid.Enabled = {0}", _grid.Enabled);
+//			Console.WriteLine("_header.Enabled = {0}", _header.Enabled);
+//			Console.WriteLine("_grid.Enabled = {0}", _grid.Enabled);
+			_header.Display();
+			_grid.Display();
 			Console.WriteLine("----------------------------------------------");
 		}
 
 		public void Operate (Operation op)
 		{
-			_currentState = _currentState.Operate(op);
+			_currentState = _currentState.Operate(op, _grid.Operate(op));
 			_currentState.Enter();
 		}
 
 		private void InitialComponent ()
 		{
+			_grid.Bind(new List<RecordModel>{
+				new RecordModel{ID = "001", Name = "First Record"},
+				new RecordModel{ID = "002", Name = "Second Record"}
+			});
+
 			State initialState = new State("Initial State", () => {
 				_header.Enabled = true;
 				_grid.Enabled = false;
@@ -45,8 +54,8 @@ namespace StateDemo00
 			initialState.OnStateEntered += Display;
 			gridState.OnStateEntered += Display;
 
-			initialState.SetupStateItem(Operation.SCROLL_DOWN, gridState);
-			gridState.SetupStateItem(Operation.SCROLL_UP, initialState);
+			initialState.SetupStateItem(Operation.SCROLL_DOWN, OperationResult.NORMALLY, gridState);
+			gridState.SetupStateItem(Operation.SCROLL_UP, OperationResult.GRID_TOP, initialState);
 
 			_currentState = initialState;
 			_currentState.Enter();

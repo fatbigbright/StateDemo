@@ -10,6 +10,8 @@ namespace StateDemo00
 
 			Browser browser = new Browser();
 			browser.Operate(Operation.SCROLL_DOWN);
+			browser.Operate(Operation.SCROLL_DOWN);
+			browser.Operate(Operation.SCROLL_UP);
 			browser.Operate(Operation.SCROLL_UP);
 			Console.ReadKey();
 		}
